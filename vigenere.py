@@ -19,7 +19,12 @@ def crack(message, key):
         
         if debug: print(f"key_index='{key_index}'")
 
-        new_message += letters[letters.index(message[i]) - letters.index(key[key_index])]
+        new_index = letters.index(message[i]) - letters.index(key[key_index])
+
+        if new_index < 0:
+            new_index += 26
+
+        new_message += letters[new_index]
 
         key_index += 1
 
