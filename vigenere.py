@@ -19,7 +19,7 @@ def crack(message, key):
         
         if debug: print(f"key_index='{key_index}'")
 
-        new_message += key[key_index]
+        new_message += letters[letters.index(message[i]) - letters.index(key[key_index])]
 
         key_index += 1
 
@@ -28,25 +28,7 @@ def crack(message, key):
         
         if debug: print(new_message)
 
-
-    cracked_message = ""
-
-    for i, letter in enumerate(new_message):
-
-        if not letter.isalpha():
-            cracked_message += letter
-            continue
-
-        new_index = letters.index(message[i]) - letters.index(new_message[i])
-        
-        if debug: print(i, message[i], new_message[i], new_index)
-
-        if new_index < 0:
-            new_index += 26
-
-        cracked_message += letters[new_index]
-
-    return cracked_message
+    return new_message
 
 
 if __name__ == "__main__":
