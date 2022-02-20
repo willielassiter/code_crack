@@ -1,2 +1,2 @@
 
-code for cracking ceasar cypher and vigenere cypher
+code and gui app for cracking ceasar cypher and vigenere cypher
