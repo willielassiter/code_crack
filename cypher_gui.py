@@ -131,14 +131,13 @@ offset_keyword_entry = Entry(options, width=10)
 offset_keyword_entry.grid(row=0, column=1, pady=(15,0), sticky=W)
 
 button_options = StringVar()
-caesar_button = Radiobutton(options, text="Caesar", variable=button_options, value="caesar", command=lambda: cypher_options("caesar"))
+caesar_button = Radiobutton(options, text="Caesar", variable=button_options, value="caesar")
 caesar_button.grid(row=0, column=2, padx=(18,25), pady=(15,0))
 
-button_options = StringVar()
-vigenere_button = Radiobutton(options, text="Vigenere", variable=button_options, value="vigenere", command=lambda: cypher_options("vigenere"))
+vigenere_button = Radiobutton(options, text="Vigenere", variable=button_options, value="vigenere")
 vigenere_button.grid(row=0, column=3, pady=(15,0))
 
-cypher_button = Button(options, text="Cypher Message!")
+cypher_button = Button(options, text="Cypher Message!", command=lambda: cypher_options(button_options.get()))
 cypher_button.grid(row=0, column=4, padx=(30,0), pady=(15,0), ipady=10)
 
 clear_fields = Button(options, text="Clear", command=clear_fields)
