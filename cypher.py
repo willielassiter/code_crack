@@ -7,18 +7,17 @@ root.geometry("775x810")
 
 debug = True
 
-def caesar_option():
-    if debug: print("calling caesar_option()")
+def cypher_options(options):
+
+    if options == "caesar":
+        if debug: print("calling caesar_option()")
+
+        caesar_cypher(decoded_box.get("1.0", END).lower(), offset_keyword_entry.get())
+
+    if options == "vigenere":
+        if debug: print("calling vigenere_option()")
     
-    caesar_cypher(decoded_box.get("1.0", END).lower(), offset_keyword_entry.get())
-
-
-def vigenere_option():
-    if debug: print("calling vigenere_option()")
-    
-    vigenere_cypher(encoded_box.get("1.0", END), offset_keyword_entry.get())
-
-    if debug: print(f"encoded entry: '{encoded_box.get('1.0', END)}', keyword: '{offset_keyword_entry.get()}'")
+        vigenere_cypher(encoded_box.get("1.0", END).lower(), offset_keyword_entry.get())
 
 
 def caesar_cypher(message, offset):
@@ -92,10 +91,18 @@ def vigenere_cypher(message, keyword):
         if debug: print(new_message)
 
     # Display in texbox 
-    encoded_box.delete(1.0, "end")
-    encoded_box.insert(1.0, new_message)
+    decoded_box.delete(1.0, "end")
+    decoded_box.insert(1.0, new_message)
 
     return new_message
+
+
+def clear_fields():
+    decoded_box.delete(1.0, "end")
+    encoded_box.delete(1.0, "end")
+    offset_keyword_entry.delete(0, END)
+    caesar_button.deselect()
+    vigenere_button.deselect()
 
 
 # Text Boxes Labels, Entries, and Buttons
@@ -123,18 +130,18 @@ offset_keyword.grid(row=0, column=0, padx=20, pady=(15,0), sticky=E)
 offset_keyword_entry = Entry(options, width=10)
 offset_keyword_entry.grid(row=0, column=1, pady=(15,0), sticky=W)
 
-caesar = StringVar()
-caesar_button = Radiobutton(options, text="Caesar", variable=caesar, value=0, command=caesar_option)
+button_options = StringVar()
+caesar_button = Radiobutton(options, text="Caesar", variable=button_options, value="caesar", command=lambda: cypher_options("caesar"))
 caesar_button.grid(row=0, column=2, padx=(18,25), pady=(15,0))
 
-vigenere = StringVar()
-vigenere_button = Radiobutton(options, text="Vigenere", variable=vigenere, value=1, command=vigenere_option)
+button_options = StringVar()
+vigenere_button = Radiobutton(options, text="Vigenere", variable=button_options, value="vigenere", command=lambda: cypher_options("vigenere"))
 vigenere_button.grid(row=0, column=3, pady=(15,0))
 
 cypher_button = Button(options, text="Cypher Message!")
 cypher_button.grid(row=0, column=4, padx=(30,0), pady=(15,0), ipady=10)
 
-clear_fields = Button(options, text="Clear")
+clear_fields = Button(options, text="Clear", command=clear_fields)
 clear_fields.grid(row=0, column=5, padx=30, pady=(15,0), ipady=10, sticky=W)
 
 # Database
