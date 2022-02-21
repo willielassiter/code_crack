@@ -12,12 +12,21 @@ def cypher_options(options):
     if options == "caesar":
         if debug: print("calling caesar_option()")
 
-        caesar_cypher(decoded_box.get("1.0", END).lower(), offset_keyword_entry.get())
+        if encode_decode.get() == "encode":
+            caesar_cypher(decoded_box.get("1.0", END).lower(), offset_keyword_entry.get())
+
+        if encode_decode.get() == "decode":
+            caesar_cypher(encoded_box.get("1.0", END).lower(), offset_keyword_entry.get())
+
 
     if options == "vigenere":
         if debug: print("calling vigenere_option()")
     
-        vigenere_cypher(encoded_box.get("1.0", END).lower(), offset_keyword_entry.get())
+        if encode_decode.get() == "encode":
+            vigenere_cypher(decoded_box.get("1.0", END).lower(), offset_keyword_entry.get())
+
+        if encode_decode.get() == "decode":
+            vigenere_cypher(encoded_box.get("1.0", END).lower(), offset_keyword_entry.get())
 
 
 def caesar_cypher(message, offset):
@@ -37,8 +46,13 @@ def caesar_cypher(message, offset):
 
             new_index = old_index + int(offset)
 
-            if new_index > 25:
-                new_index = new_index - 26
+            if encode_decode.get() == "encode":
+                if new_index > 25:
+                    new_index -= 26
+
+            if encode_decode.get() == "decode":
+                if new_index < 0:
+                    new_index += 26
 
             if debug: print(f"new_index = {new_index}")
 
@@ -51,9 +65,14 @@ def caesar_cypher(message, offset):
 
             if debug: print(f"new_message = '{new_message}'")
 
-    # Display in texbox 
-    encoded_box.delete(1.0, "end")
-    encoded_box.insert(1.0, new_message)
+    # Display in texbox
+    if encode_decode.get() == "encode": 
+        encoded_box.delete(1.0, "end")
+        encoded_box.insert(1.0, new_message)
+
+    if encode_decode.get() == "decode":
+        decoded_box.delete(1.0, "end")
+        decoded_box.insert(1.0, new_message)
 
     return new_message
 
@@ -75,11 +94,21 @@ def vigenere_cypher(message, keyword):
             continue
         
         if debug: print(f"key_index='{key_index}'")
+        
+        if encode_decode.get() == "encode":
 
-        new_index = letters.index(message[i]) - letters.index(keyword[key_index])
+            if debug: print(f"encode_decode.get() = '{encode_decode.get()}'")
 
-        if new_index < 0:
-            new_index += 26
+            new_index = letters.index(message[i]) + letters.index(keyword[key_index])
+        
+            if new_index > 25:
+                new_index -= 26
+
+        if encode_decode.get() == "decode":
+            new_index = letters.index(message[i]) - letters.index(keyword[key_index])
+
+            if new_index < 0:
+                new_index += 26
 
         new_message += letters[new_index]
 
@@ -91,9 +120,14 @@ def vigenere_cypher(message, keyword):
         if debug: print(new_message)
 
     # Display in texbox 
-    decoded_box.delete(1.0, "end")
-    decoded_box.insert(1.0, new_message)
-
+    if encode_decode.get() == "decode":
+        decoded_box.delete(1.0, "end")
+        decoded_box.insert(1.0, new_message)
+        
+    if encode_decode.get() == "encode":
+        encoded_box.delete(1.0, "end")
+        encoded_box.insert(1.0, new_message)
+        
     return new_message
 
 
@@ -115,7 +149,7 @@ decoded_box = Text(message, width=100, height=15)
 decoded_box.grid(row=1, column=0, padx=10, pady=(10,20))
 
 encoded_label = Label(message, text="Encoded Messsage -")
-encoded_label.grid(row=2, column=0, padx=10, sticky=W)
+encoded_label.grid(row=2, column=0, padx=10, pady=(20,0), sticky=W)
 encoded_box = Text(message, width=100, height=15)
 encoded_box.grid(row=3, column=0, padx=10, pady=(10,0))
 
@@ -132,20 +166,22 @@ offset_keyword_entry.grid(row=0, column=1, pady=(15,0), sticky=W)
 
 button_options = StringVar()
 caesar_button = Radiobutton(options, text="Caesar", variable=button_options, value="caesar")
-caesar_button.grid(row=0, column=2, padx=(18,25), pady=(15,0))
-
+caesar_button.grid(row=0, column=2, padx=(18,10), pady=(15,0))
 vigenere_button = Radiobutton(options, text="Vigenere", variable=button_options, value="vigenere")
-vigenere_button.grid(row=0, column=3, pady=(15,0))
+vigenere_button.grid(row=0, column=3, padx=(0,10), pady=(15,0))
+
+encode_decode = StringVar()
+encode_button = Radiobutton(options, text="Encode", variable=encode_decode, value="encode")
+encode_button.grid(row=1, column=2, padx=(10,0), pady=(15,0), ipady=10)
+decode_button = Radiobutton(options, text="Decode", variable=encode_decode, value="decode")
+decode_button.grid(row=1, column=3, padx=(10,0), pady=(15,0), ipady=10)
 
 cypher_button = Button(options, text="Cypher Message!", command=lambda: cypher_options(button_options.get()))
-cypher_button.grid(row=0, column=4, padx=(30,0), pady=(15,0), ipady=10)
+cypher_button.grid(row=0, column=4, padx=(10,0), pady=(15,0), ipady=10)
+
 
 clear_fields = Button(options, text="Clear", command=clear_fields)
-clear_fields.grid(row=0, column=5, padx=30, pady=(15,0), ipady=10, sticky=W)
-
-# Database
-show_database = Button(root, text="Show Database")
-show_database.pack(fill="both", expand="yes", padx=20, pady=(0, 20))
+clear_fields.grid(row=0, column=6, padx=10, pady=(15,0), ipady=10, sticky=W)
 
 
 root.mainloop()
