@@ -149,7 +149,7 @@ decoded_box = Text(message, width=100, height=15)
 decoded_box.grid(row=1, column=0, padx=10, pady=(10,20))
 
 encoded_label = Label(message, text="Encoded Messsage -")
-encoded_label.grid(row=2, column=0, padx=10, pady=(20,0), sticky=W)
+encoded_label.grid(row=2, column=0, padx=10, pady=(10,0), sticky=W)
 encoded_box = Text(message, width=100, height=15)
 encoded_box.grid(row=3, column=0, padx=10, pady=(10,0))
 
@@ -166,22 +166,22 @@ offset_keyword_entry.grid(row=0, column=1, pady=(15,0), sticky=W)
 
 button_options = StringVar()
 caesar_button = Radiobutton(options, text="Caesar", variable=button_options, value="caesar")
-caesar_button.grid(row=0, column=2, padx=(18,10), pady=(15,0))
+caesar_button.grid(row=0, column=2, padx=(18,10), pady=(20,0), sticky=N)
 vigenere_button = Radiobutton(options, text="Vigenere", variable=button_options, value="vigenere")
-vigenere_button.grid(row=0, column=3, padx=(0,10), pady=(15,0))
+vigenere_button.grid(row=0, column=3, padx=(0,10), pady=(20,0), sticky=N)
 
 encode_decode = StringVar()
 encode_button = Radiobutton(options, text="Encode", variable=encode_decode, value="encode")
-encode_button.grid(row=1, column=2, padx=(10,0), pady=(15,0), ipady=10)
+encode_button.grid(row=1, column=2, padx=(10,0))
 decode_button = Radiobutton(options, text="Decode", variable=encode_decode, value="decode")
-decode_button.grid(row=1, column=3, padx=(10,0), pady=(15,0), ipady=10)
+decode_button.grid(row=1, column=3, padx=(0,10))
 
-cypher_button = Button(options, text="Cypher Message!", command=lambda: cypher_options(button_options.get()))
-cypher_button.grid(row=0, column=4, padx=(10,0), pady=(15,0), ipady=10)
+cypher_button = Button(options, text="Cypher Message !", command=lambda: cypher_options(button_options.get()))
+cypher_button.grid(row=0, column=4, padx=(10,0), pady=(20,0), ipady=10)
 
 
-clear_fields = Button(options, text="Clear", command=clear_fields)
-clear_fields.grid(row=0, column=6, padx=10, pady=(15,0), ipady=10, sticky=W)
+clear_fields = Button(options, text="Clear Fields", command=clear_fields)
+clear_fields.grid(row=0, column=6, padx=10, pady=(20,0), ipady=10, sticky=W)
 
 
 root.mainloop()
