@@ -44,13 +44,15 @@ def caesar_cypher(message, offset):
 
             if debug: print(f"old_index = {old_index}")
 
-            new_index = old_index + int(offset)
-
             if encode_decode.get() == "encode":
+                new_index = old_index + int(offset)
+
                 if new_index > 25:
                     new_index -= 26
 
             if encode_decode.get() == "decode":
+                new_index = old_index - int(offset)
+
                 if new_index < 0:
                     new_index += 26
 
