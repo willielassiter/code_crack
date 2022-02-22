@@ -11,6 +11,7 @@ class App(Tk):
 
         self.title("Cypher")
         self.geometry("775x810")
+        self.eval('tk::PlaceWindow . center')
 
         # Text Boxes Labels, Entries, and Buttons
         self.message = LabelFrame(self, text="Message")
