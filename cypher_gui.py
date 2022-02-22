@@ -12,7 +12,7 @@ class App(Tk):
         self.geometry("775x810")
 
         # Text Boxes Labels, Entries, and Buttons
-        self.message = LabelFrame(app, text="Message")
+        self.message = LabelFrame(self, text="Message")
         self.message.pack(fill="both", expand="yes", padx=20, pady=(20, 0))
 
         self.decoded_label = Label(self.message, text="Decoded Message -")
@@ -29,7 +29,7 @@ class App(Tk):
 
 
         # Options Labels, Entries, and Buttons
-        self.options = LabelFrame(app, text="Options")
+        self.options = LabelFrame(self, text="Options")
         self.options.pack(fill="x", expand="no", padx=20, pady=20, ipadx=20, ipady=10)
 
         self.offset_keyword = Label(self.options, text="Offset/Keyword")
@@ -67,20 +67,20 @@ class App(Tk):
             if debug: print("calling caesar_option()")
 
             if self.encode_decode.get() == "encode":
-                caesar_cypher(self.decoded_box.get("1.0", END).lower(), self.offset_keyword_entry.get())
+                app.caesar_cypher(self.decoded_box.get("1.0", END).lower(), self.offset_keyword_entry.get(), self.encode_decode.get())
 
             if self.encode_decode.get() == "decode":
-                caesar_cypher(self.encoded_box.get("1.0", END).lower(), self.offset_keyword_entry.get())
+                app.caesar_cypher(self.encoded_box.get("1.0", END).lower(), self.offset_keyword_entry.get(), self.encode_decode.get())
 
 
         if options == "vigenere":
             if debug: print("calling vigenere_option()")
         
             if self.encode_decode.get() == "encode":
-                vigenere_cypher(self.decoded_box.get("1.0", END).lower(), self.offset_keyword_entry.get())
+                app.vigenere_cypher(self.decoded_box.get("1.0", END).lower(), self.offset_keyword_entry.get(), self.encode_decode.get())
 
             if self.encode_decode.get() == "decode":
-                vigenere_cypher(self.encoded_box.get("1.0", END).lower(), self.offset_keyword_entry.get())
+                app.vigenere_cypher(self.encoded_box.get("1.0", END).lower(), self.offset_keyword_entry.get(), self.encode_decode.get())
 
         
     def clear_fields(self):
@@ -96,108 +96,112 @@ class App(Tk):
         self.decode_button.deselect()
 
 
-def caesar_cypher(message, offset):
-    if debug: print(f"initialized caesar_cypher() with message - '{message}' and offset - {offset}")
-    
-    new_message = ""
-    alphabet = "abcdefghijklmnopqrstuvwxyz"
+    def display_results():
+        pass
 
-    for letter in message:
 
-        if debug: print(f"iterating through '{letter}' in message")
+    def caesar_cypher(self, message, offset, action):
+        if debug: print(f"initialized caesar_cypher() with message - '{message}' and offset - {offset}")
+        
+        new_message = ""
+        alphabet = "abcdefghijklmnopqrstuvwxyz"
 
-        if letter in alphabet:
-            old_index = alphabet.index(letter)
+        for letter in message:
 
-            if debug: print(f"old_index = {old_index}")
+            if debug: print(f"iterating through '{letter}' in message")
 
-            if encode_decode.get() == "encode":
-                new_index = old_index + int(offset)
+            if letter in alphabet:
+                old_index = alphabet.index(letter)
 
+                if debug: print(f"old_index = {old_index}")
+
+                if action == "encode":
+                    new_index = old_index + int(offset)
+
+                    if new_index > 25:
+                        new_index -= 26
+
+                if action == "decode":
+                    new_index = old_index - int(offset)
+
+                    if new_index < 0:
+                        new_index += 26
+
+                if debug: print(f"new_index = {new_index}")
+
+                new_message += alphabet[new_index]
+
+                if debug: print(f"new_message = {new_message}")
+
+            else:
+                new_message += letter
+
+                if debug: print(f"new_message = '{new_message}'")
+
+        # Display in texbox
+        if action == "encode": 
+            self.encoded_box.delete(1.0, "end")
+            self.encoded_box.insert(1.0, new_message)
+
+        if action == "decode":
+            self.decoded_box.delete(1.0, "end")
+            self.decoded_box.insert(1.0, new_message)
+
+        return new_message
+
+
+    def vigenere_cypher(self, message, keyword, action):
+        if debug: print(f"initialized vigenere_cypher() with message - '{message}' and keyword - '{keyword}'")
+
+        letters = "abcdefghijklmnopqrstuvwxyz"
+        key_index = 0
+
+        new_message = ""
+
+        for i in range(len(message)):
+
+            if debug: print(message[i])
+                
+            if not message[i].isalpha():
+                new_message += message[i]
+                continue
+            
+            if debug: print(f"key_index='{key_index}'")
+            
+            if action == "encode":
+
+                if debug: print(f"encode_decode.get() = '{action}'")
+
+                new_index = letters.index(message[i]) + letters.index(keyword[key_index])
+            
                 if new_index > 25:
                     new_index -= 26
 
-            if encode_decode.get() == "decode":
-                new_index = old_index - int(offset)
+            if action == "decode":
+                new_index = letters.index(message[i]) - letters.index(keyword[key_index])
 
                 if new_index < 0:
                     new_index += 26
 
-            if debug: print(f"new_index = {new_index}")
+            new_message += letters[new_index]
 
-            new_message += alphabet[new_index]
+            key_index += 1
 
-            if debug: print(f"new_message = {new_message}")
-
-        else:
-            new_message += letter
-
-            if debug: print(f"new_message = '{new_message}'")
-
-    # Display in texbox
-    if encode_decode.get() == "encode": 
-        encoded_box.delete(1.0, "end")
-        encoded_box.insert(1.0, new_message)
-
-    if encode_decode.get() == "decode":
-        decoded_box.delete(1.0, "end")
-        decoded_box.insert(1.0, new_message)
-
-    return new_message
-
-
-def vigenere_cypher(message, keyword):
-    if debug: print(f"initialized vigenere_cypher() with message - '{message}' and keyword - '{keyword}'")
-
-    letters = "abcdefghijklmnopqrstuvwxyz"
-    key_index = 0
-
-    new_message = ""
-
-    for i in range(len(message)):
-
-        if debug: print(message[i])
+            if key_index >= len(keyword):
+                key_index = key_index % len(keyword)
             
-        if not message[i].isalpha():
-            new_message += message[i]
-            continue
-        
-        if debug: print(f"key_index='{key_index}'")
-        
-        if encode_decode.get() == "encode":
+            if debug: print(new_message)
 
-            if debug: print(f"encode_decode.get() = '{encode_decode.get()}'")
-
-            new_index = letters.index(message[i]) + letters.index(keyword[key_index])
-        
-            if new_index > 25:
-                new_index -= 26
-
-        if encode_decode.get() == "decode":
-            new_index = letters.index(message[i]) - letters.index(keyword[key_index])
-
-            if new_index < 0:
-                new_index += 26
-
-        new_message += letters[new_index]
-
-        key_index += 1
-
-        if key_index >= len(keyword):
-            key_index = key_index % len(keyword)
-        
-        if debug: print(new_message)
-
-    # Display in texbox 
-    if encode_decode.get() == "decode":
-        decoded_box.delete(1.0, "end")
-        decoded_box.insert(1.0, new_message)
-        
-    if encode_decode.get() == "encode":
-        encoded_box.delete(1.0, "end")
-        encoded_box.insert(1.0, new_message)
-        
-    return new_message
+        # Display in texbox 
+        if action == "decode":
+            self.decoded_box.delete(1.0, "end")
+            self.decoded_box.insert(1.0, new_message)
+            
+        if action == "encode":
+            self.encoded_box.delete(1.0, "end")
+            self.encoded_box.insert(1.0, new_message)
+            
+        return new_message
         
 
 if __name__ == "__main__":
