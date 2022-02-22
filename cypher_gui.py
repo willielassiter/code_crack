@@ -3,6 +3,7 @@ from tkinter import ttk
 
 
 debug = True
+trace = True
 
 class App(Tk):
     def __init__(self):
@@ -64,15 +65,16 @@ class App(Tk):
 
 
     def cypher_options(self, options):
+        if debug: print("initialized cypher_options()")
 
         if options == "caesar":
-            if debug: print("calling caesar_option()")
+            if trace: print("calling caesar_cypher()")
 
             app.caesar_cypher(self.input_box.get("1.0", END), self.offset_keyword_entry.get(), self.encode_decode.get())
 
 
-        if options == "vigenere":
-            if debug: print("calling vigenere_option()")
+        if trace == "vigenere":
+            if debug: print("calling vigenere_cypher()")
         
             app.vigenere_cypher(self.input_box.get("1.0", END), self.offset_keyword_entry.get(), self.encode_decode.get())
 
@@ -107,12 +109,12 @@ class App(Tk):
 
         for letter in message:
 
-            if debug: print(f"iterating through '{letter}' in message")
+            if trace: print(f"iterating through '{letter}' in message")
 
             if letter in alphabet:
                 old_index = alphabet.index(letter)
 
-                if debug: print(f"old_index = {old_index}")
+                if trace: print(f"old_index = {old_index}")
 
                 if action == "encode":
                     new_index = old_index + int(offset)
@@ -126,25 +128,16 @@ class App(Tk):
                     if new_index < 0:
                         new_index += 26
 
-                if debug: print(f"new_index = {new_index}")
+                if trace: print(f"new_index = {new_index}")
 
                 new_message += alphabet[new_index]
 
-                if debug: print(f"new_message = {new_message}")
+                if trace: print(f"new_message = {new_message}")
 
             else:
                 new_message += letter
 
-                if debug: print(f"new_message = '{new_message}'")
-
-        # Display in texbox
-        # if action == "encode": 
-        #     self.encoded_box.delete(1.0, "end")
-        #     self.encoded_box.insert(1.0, new_message)
-
-        # if action == "decode":
-        #     self.decoded_box.delete(1.0, "end")
-        #     self.decoded_box.insert(1.0, new_message)
+        if debug: print(f"new_message = '{new_message}'")
 
         app.display_results(new_message)
 
@@ -165,13 +158,13 @@ class App(Tk):
 
         for i in range(len(message)):
 
-            if debug: print(message[i])
+            if trace: print(message[i])
                 
             if not message[i].isalpha():
                 new_message += message[i]
                 continue
             
-            if debug: print(f"key_index='{key_index}'")
+            if trace: print(f"key_index='{key_index}'")
             
             if action == "encode":
 
@@ -195,16 +188,7 @@ class App(Tk):
             if key_index >= len(keyword):
                 key_index = key_index % len(keyword)
             
-            if debug: print(new_message)
-
-        # Display in texbox 
-        # if action == "decode":
-        #     self.decoded_box.delete(1.0, "end")
-        #     self.decoded_box.insert(1.0, new_message)
-            
-        # if action == "encode":
-        #     self.encoded_box.delete(1.0, "end")
-        #     self.encoded_box.insert(1.0, new_message)
+        if debug: print(new_message)
 
         app.display_results(new_message)
             
