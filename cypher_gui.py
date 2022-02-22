@@ -39,19 +39,19 @@ class App(Tk):
         self.offset_keyword_entry.grid(row=0, column=1, pady=(15,0), sticky=W)
 
         self.button_options = StringVar()
-        self.button_options.set("Caesar")
 
         self.caesar_button = Radiobutton(self.options, text="Caesar", variable=self.button_options, value="caesar")
         self.caesar_button.grid(row=0, column=2, padx=(18,10), pady=(20,0), sticky=N)
+        self.caesar_button.select()
 
         self.vigenere_button = Radiobutton(self.options, text="Vigenere", variable=self.button_options, value="vigenere")
         self.vigenere_button.grid(row=0, column=3, padx=(0,10), pady=(20,0), sticky=N)
 
         self.encode_decode = StringVar()
-        self.encode_decode.set("Encode")
 
         self.encode_button = Radiobutton(self.options, text="Encode", variable=self.encode_decode, value="encode")
         self.encode_button.grid(row=1, column=2, padx=(10,0))
+        self.encode_button.select()
 
         self.decode_button = Radiobutton(self.options, text="Decode", variable=self.encode_decode, value="decode")
         self.decode_button.grid(row=1, column=3, padx=(0,10))
@@ -91,10 +91,10 @@ class App(Tk):
 
         self.offset_keyword_entry.delete(0, END)
 
-        self.caesar_button.deselect()
+        self.caesar_button.select()
         self.vigenere_button.deselect()
 
-        self.encode_button.deselect()
+        self.encode_button.select()
         self.decode_button.deselect()
 
 
