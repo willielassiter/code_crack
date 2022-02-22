@@ -15,17 +15,17 @@ class App(Tk):
         self.message = LabelFrame(self, text="Message")
         self.message.pack(fill="both", expand="yes", padx=20, pady=(20, 0))
 
-        self.decoded_label = Label(self.message, text="Decoded Message -")
-        self.decoded_label.grid(row=0, column=0, padx=10, pady=(20,0), sticky=W)
+        self.input_label = Label(self.message, text="Input Message -")
+        self.input_label.grid(row=0, column=0, padx=10, pady=(20,0), sticky=W)
 
-        self.decoded_box = Text(self.message, width=100, height=15)
-        self.decoded_box.grid(row=1, column=0, padx=10, pady=(10,20))
+        self.input_box = Text(self.message, width=100, height=15)
+        self.input_box.grid(row=1, column=0, padx=10, pady=(10,20))
 
-        self.encoded_label = Label(self.message, text="Encoded Messsage -")
-        self.encoded_label.grid(row=2, column=0, padx=10, pady=(10,0), sticky=W)
+        self.output_label = Label(self.message, text="Output Messsage -")
+        self.output_label.grid(row=2, column=0, padx=10, pady=(10,0), sticky=W)
 
-        self.encoded_box = Text(self.message, width=100, height=15)
-        self.encoded_box.grid(row=3, column=0, padx=10, pady=(10,0))
+        self.output_box = Text(self.message, width=100, height=15)
+        self.output_box.grid(row=3, column=0, padx=10, pady=(10,0))
 
 
         # Options Labels, Entries, and Buttons
@@ -67,25 +67,25 @@ class App(Tk):
             if debug: print("calling caesar_option()")
 
             if self.encode_decode.get() == "encode":
-                app.caesar_cypher(self.decoded_box.get("1.0", END).lower(), self.offset_keyword_entry.get(), self.encode_decode.get())
+                app.caesar_cypher(self.input_box.get("1.0", END).lower(), self.offset_keyword_entry.get(), self.encode_decode.get())
 
             if self.encode_decode.get() == "decode":
-                app.caesar_cypher(self.encoded_box.get("1.0", END).lower(), self.offset_keyword_entry.get(), self.encode_decode.get())
+                app.caesar_cypher(self.input_box.get("1.0", END).lower(), self.offset_keyword_entry.get(), self.encode_decode.get())
 
 
         if options == "vigenere":
             if debug: print("calling vigenere_option()")
         
             if self.encode_decode.get() == "encode":
-                app.vigenere_cypher(self.decoded_box.get("1.0", END).lower(), self.offset_keyword_entry.get(), self.encode_decode.get())
+                app.vigenere_cypher(self.input_box.get("1.0", END).lower(), self.offset_keyword_entry.get(), self.encode_decode.get())
 
             if self.encode_decode.get() == "decode":
-                app.vigenere_cypher(self.encoded_box.get("1.0", END).lower(), self.offset_keyword_entry.get(), self.encode_decode.get())
+                app.vigenere_cypher(self.input_box.get("1.0", END).lower(), self.offset_keyword_entry.get(), self.encode_decode.get())
 
         
     def clear_fields(self):
-        self.decoded_box.delete(1.0, "end")
-        self.encoded_box.delete(1.0, "end")
+        self.input_box.delete(1.0, "end")
+        self.output_box.delete(1.0, "end")
 
         self.offset_keyword_entry.delete(0, END)
 
@@ -96,8 +96,9 @@ class App(Tk):
         self.decode_button.deselect()
 
 
-    def display_results():
-        pass
+    def display_results(self, results):
+        self.output_box.delete(1.0, "end")
+        self.output_box.insert(1.0, results)
 
 
     def caesar_cypher(self, message, offset, action):
@@ -139,13 +140,15 @@ class App(Tk):
                 if debug: print(f"new_message = '{new_message}'")
 
         # Display in texbox
-        if action == "encode": 
-            self.encoded_box.delete(1.0, "end")
-            self.encoded_box.insert(1.0, new_message)
+        # if action == "encode": 
+        #     self.encoded_box.delete(1.0, "end")
+        #     self.encoded_box.insert(1.0, new_message)
 
-        if action == "decode":
-            self.decoded_box.delete(1.0, "end")
-            self.decoded_box.insert(1.0, new_message)
+        # if action == "decode":
+        #     self.decoded_box.delete(1.0, "end")
+        #     self.decoded_box.insert(1.0, new_message)
+
+        app.display_results(new_message)
 
         return new_message
 
@@ -193,13 +196,15 @@ class App(Tk):
             if debug: print(new_message)
 
         # Display in texbox 
-        if action == "decode":
-            self.decoded_box.delete(1.0, "end")
-            self.decoded_box.insert(1.0, new_message)
+        # if action == "decode":
+        #     self.decoded_box.delete(1.0, "end")
+        #     self.decoded_box.insert(1.0, new_message)
             
-        if action == "encode":
-            self.encoded_box.delete(1.0, "end")
-            self.encoded_box.insert(1.0, new_message)
+        # if action == "encode":
+        #     self.encoded_box.delete(1.0, "end")
+        #     self.encoded_box.insert(1.0, new_message)
+
+        app.display_results(new_message)
             
         return new_message
         
