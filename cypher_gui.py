@@ -68,21 +68,13 @@ class App(Tk):
         if options == "caesar":
             if debug: print("calling caesar_option()")
 
-            if self.encode_decode.get() == "encode":
-                app.caesar_cypher(self.input_box.get("1.0", END).lower(), self.offset_keyword_entry.get(), self.encode_decode.get())
-
-            if self.encode_decode.get() == "decode":
-                app.caesar_cypher(self.input_box.get("1.0", END).lower(), self.offset_keyword_entry.get(), self.encode_decode.get())
+            app.caesar_cypher(self.input_box.get("1.0", END), self.offset_keyword_entry.get(), self.encode_decode.get())
 
 
         if options == "vigenere":
             if debug: print("calling vigenere_option()")
         
-            if self.encode_decode.get() == "encode":
-                app.vigenere_cypher(self.input_box.get("1.0", END).lower(), self.offset_keyword_entry.get(), self.encode_decode.get())
-
-            if self.encode_decode.get() == "decode":
-                app.vigenere_cypher(self.input_box.get("1.0", END).lower(), self.offset_keyword_entry.get(), self.encode_decode.get())
+            app.vigenere_cypher(self.input_box.get("1.0", END), self.offset_keyword_entry.get(), self.encode_decode.get())
 
         
     def clear_fields(self):
@@ -104,7 +96,11 @@ class App(Tk):
 
 
     def caesar_cypher(self, message, offset, action):
-        if debug: print(f"initialized caesar_cypher() with message - '{message}' and offset - {offset}")
+        if debug: print(f"initialized caesar_cypher() with offset - {offset}")
+
+        message = message.lower()
+
+        if debug: print(f"message = '{message}'")
         
         new_message = ""
         alphabet = "abcdefghijklmnopqrstuvwxyz"
@@ -156,7 +152,11 @@ class App(Tk):
 
 
     def vigenere_cypher(self, message, keyword, action):
-        if debug: print(f"initialized vigenere_cypher() with message - '{message}' and keyword - '{keyword}'")
+        if debug: print(f"initialized vigenere_cypher() with keyword - '{keyword}'")
+
+        message = message.lower()
+
+        if debug: print(f"message = '{message}'")
 
         letters = "abcdefghijklmnopqrstuvwxyz"
         key_index = 0
