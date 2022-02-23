@@ -189,10 +189,7 @@ class App(Tk):
 
         if debug: print(f"message = '{message}'")
 
-        try:
-            not keyword.isalpha()
-
-        except:
+        if not keyword.isalpha():
             messagebox.showerror("showerror", "ERROR: Keyword must only contain alphabets")
 
         letters = "abcdefghijklmnopqrstuvwxyz"
