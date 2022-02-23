@@ -37,7 +37,7 @@ def decoder(string, offset):
         else:
             new_string.append(letter)
 
-            if debug: print(f"{new_string}")
+        if debug: print(f"new_string - {new_string}")
 
     for i in range(len(string)):
 

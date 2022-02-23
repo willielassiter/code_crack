@@ -129,9 +129,9 @@ class App(Tk):
     def caesar_cypher(self, message, offset, action):
         if debug: print(f"initialized caesar_cypher() with offset - {offset}")
 
-        message = message.lower()
+        message_copy = message.lower()
 
-        if debug: print(f"message = '{message}'")
+        if debug: print(f"message_copy = '{message_copy}'")
 
         try:
             offset = int(offset)
@@ -141,12 +141,12 @@ class App(Tk):
         except:
             messagebox.showerror("showerror", "ERROR: Offset value must be an integer")
 
-        new_message = ""
+        new_message = []
         alphabet = "abcdefghijklmnopqrstuvwxyz"
 
-        for letter in message:
+        for letter in message_copy:
 
-            if trace: print(f"iterating through '{letter}' in message")
+            if trace: print(f"iterating through '{letter}' in message_copy")
 
             if letter in alphabet:
                 old_index = alphabet.index(letter)
@@ -167,12 +167,23 @@ class App(Tk):
 
                 if trace: print(f"new_index = {new_index}")
 
-                new_message += alphabet[new_index]
+                new_message.append(alphabet[new_index])
 
                 if trace: print(f"new_message = {new_message}")
 
             else:
-                new_message += letter
+                new_message.append(letter)
+
+        for i in range(len(message)):
+
+            if debug: print(f"string[i] - '{message[i]}'")
+
+            if message[i].isupper():
+                new_message[i] = new_message[i].upper()
+                
+                if debug: print(f"new_message[i] - '{new_message[i]}'")
+    
+        new_message = "".join(new_message)
 
         if debug: print(f"new_message = '{new_message}'")
 
@@ -182,11 +193,12 @@ class App(Tk):
 
 
     def vigenere_cypher(self, message, keyword, action):
-        if debug: print(f"initialized vigenere_cypher() with keyword - '{keyword}'")
+        if debug: print(f"initialized vigenere_cypher()")
 
-        message = message.lower()
+        message_copy = message.lower()
+        keyword = keyword.lower()
 
-        if debug: print(f"message = '{message}'")
+        if debug: print(f"message - '{message}'; keyword - '{keyword}'")
 
         if not keyword.isalpha():
             messagebox.showerror("showerror", "ERROR: Keyword must only contain alphabets")
@@ -194,14 +206,14 @@ class App(Tk):
         letters = "abcdefghijklmnopqrstuvwxyz"
         key_index = 0
 
-        new_message = ""
+        new_message = []
 
-        for i in range(len(message)):
+        for i in range(len(message_copy)):
 
-            if trace: print(message[i])
+            if trace: print(message_copy[i])
                 
-            if not message[i].isalpha():
-                new_message += message[i]
+            if not message_copy[i].isalpha():
+                new_message.append(message_copy[i])
                 continue
             
             if trace: print(f"key_index='{key_index}'")
@@ -216,19 +228,30 @@ class App(Tk):
                     new_index -= 26
 
             if action == "decode":
-                new_index = letters.index(message[i]) - (letters.index(keyword[key_index]) % 26)
+                new_index = letters.index(message_copy[i]) - (letters.index(keyword[key_index]) % 26)
 
                 if new_index < 0:
                     new_index += 26
 
-            new_message += letters[new_index]
+            new_message.append(letters[new_index])
 
             key_index += 1
 
             if key_index >= len(keyword):
                 key_index = key_index % len(keyword)
+
+        for i in range(len(message)):
+
+            if debug: print(f"message[i] - '{message[i]}'")
+
+            if message[i].isupper():
+                new_message[i] = new_message[i].upper()
+                
+                if debug: print(f"new_message[i] - '{new_message[i]}'")
+    
+        new_message = "".join(new_message)
             
-        if debug: print(new_message)
+        if debug: print(f"new_message - '{new_message}'")
 
         app.display_results(new_message)
             
