@@ -37,7 +37,7 @@ class App(Tk):
         self.button_options = StringVar()
 
         self.caesar_button = Radiobutton(self.options, text="Caesar", variable=self.button_options, value="caesar", command=self.disable_keyword)
-        self.caesar_button.grid(row=0, column=0, padx=(18,10), pady=(12,0), sticky=N)
+        self.caesar_button.grid(row=0, column=0, padx=(18,10), pady=(10,0), sticky=N)
         self.caesar_button.select()
 
         self.vigenere_button = Radiobutton(self.options, text="Vigenere", variable=self.button_options, value="vigenere", command=self.disable_offset)
@@ -62,7 +62,7 @@ class App(Tk):
         self.encode_decode = StringVar()
 
         self.encode_button = Radiobutton(self.options, text="Encode", variable=self.encode_decode, value="encode")
-        self.encode_button.grid(row=0, column=3, padx=(25,20), pady=(0,0))
+        self.encode_button.grid(row=0, column=3, padx=(25,20), pady=(10,0))
         self.encode_button.select()
 
         self.decode_button = Radiobutton(self.options, text="Decode", variable=self.encode_decode, value="decode")
@@ -76,7 +76,7 @@ class App(Tk):
 
         # Quit program button
         self.close_button = Button(self, text="Close Application", command=self.destroy)
-        self.close_button.grid(row=2, column=0, columnspan=5, pady=10, ipadx=298, ipady=2)
+        self.close_button.grid(row=2, column=0, columnspan=5, pady=10, ipadx=298, ipady=4)
 
 
     def disable_keyword(self):
