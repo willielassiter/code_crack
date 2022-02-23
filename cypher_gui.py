@@ -12,6 +12,7 @@ class App(Tk):
 
         self.title("Cypher GUI")
 
+        # Center app in screen
         self.window_width = 775
         self.window_height = 810
         self.screen_width = self.winfo_screenwidth()
@@ -117,9 +118,9 @@ class App(Tk):
         if debug: print("cypher_options()")
 
         if options == "caesar":
-            if trace: print("caesar_cypher()")
+            if trace: print("calling caesar_cypher()")
 
-            message = self.input_box.get("1.0", END)
+            message = self.input_box.get("1.0", END).strip()
             action = self.encode_decode.get()
 
             try:
@@ -134,9 +135,9 @@ class App(Tk):
 
 
         else:
-            if trace: print("vigenere_cypher()")
+            if trace: print("calling vigenere_cypher()")
 
-            message = self.input_box.get("1.0", END)
+            message = self.input_box.get("1.0", END).strip()
             action = self.encode_decode.get()
             keyword = self.keyword_entry.get()
 
@@ -154,9 +155,12 @@ class App(Tk):
     def caesar_cypher(self, message, offset, action):
         if debug: print(f"caesar_cypher() with offset - {offset}")
 
-        message_copy = message.lower()
+        message_copy = message.lower().strip()
 
         if debug: print(f"message_copy = '{message_copy}'")
+
+        if action == "decode":
+            offset = -(offset)
 
         new_message = []
         alphabet = "abcdefghijklmnopqrstuvwxyz"
@@ -169,18 +173,14 @@ class App(Tk):
                 old_index = alphabet.index(letter)
 
                 if trace: print(f"old_index = {old_index}")
+                
+                new_index = old_index + (offset % 26)
 
-                if action == "encode":
-                    new_index = old_index + (offset % 26)
+                if new_index > 25:
+                    new_index -= 26
 
-                    if new_index > 25:
-                        new_index -= 26
-
-                if action == "decode":
-                    new_index = old_index - (offset % 26)
-
-                    if new_index < 0:
-                        new_index += 26
+                if new_index < 0:
+                    new_index += 26
 
                 if trace: print(f"new_index = {new_index}")
 
@@ -210,17 +210,23 @@ class App(Tk):
 
 
     def vigenere_cypher(self, message, keyword, action):
-        if debug: print(f"vigenere_cypher()")
+        if debug: print(f"vigenere_cypher() with keyword -'{keyword}'")
 
-        message_copy = message.lower()
+        message_copy = message.lower().strip()
         keyword = keyword.lower()
 
-        if debug: print(f"message - '{message}'; keyword - '{keyword}'")
+        if debug: print(f"message - '{message}', keyword - '{keyword}', action - '{action}'")
 
         letters = "abcdefghijklmnopqrstuvwxyz"
         key_index = 0
 
         new_message = []
+        offset_index = letters.index(keyword[key_index])
+
+        if trace: print(f"offset_index - '{offset_index}'")
+
+        if action == "decode":
+            offset_index = -(letters.index(keyword[key_index]))
 
         for i in range(len(message_copy)):
 
@@ -231,21 +237,14 @@ class App(Tk):
                 continue
             
             if trace: print(f"key_index='{key_index}'")
+
+            new_index = letters.index(message_copy[i]) + (letters.index(keyword[key_index]) % 26)
             
-            if action == "encode":
+            if new_index > 25:
+                new_index -= 26
 
-                if debug: print(f"action = '{action}'")
-
-                new_index = letters.index(message_copy[i]) + (letters.index(keyword[key_index]) % 26)
-            
-                if new_index > 25:
-                    new_index -= 26
-
-            if action == "decode":
-                new_index = letters.index(message_copy[i]) - (letters.index(keyword[key_index]) % 26)
-
-                if new_index < 0:
-                    new_index += 26
+            if new_index < 0:
+                new_index += 26
 
             new_message.append(letters[new_index])
 
