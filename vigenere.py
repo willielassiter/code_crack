@@ -19,7 +19,7 @@ def encode(message, key):
         
         if debug: print(f"key_index='{key_index}'")
 
-        new_index = letters.index(message[i]) + letters.index(key[key_index])
+        new_index = letters.index(message[i]) + (letters.index(key[key_index]) % 26)
 
         if new_index > 25:
             new_index -= 26
@@ -55,7 +55,7 @@ def decode(message, key):
         
         if debug: print(f"key_index='{key_index}'")
 
-        new_index = letters.index(message[i]) - letters.index(key[key_index])
+        new_index = letters.index(message[i]) - (letters.index(key[key_index]) % 26)
 
         if new_index < 0:
             new_index += 26

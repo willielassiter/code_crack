@@ -18,7 +18,7 @@ def decoder(string, offset):
 
             if debug: print(f"old_index = {old_index}")
 
-            new_index = old_index + offset
+            new_index = old_index + (offset % 26)
 
             if new_index > 25:
                 new_index = new_index - 26

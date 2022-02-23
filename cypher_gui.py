@@ -155,13 +155,13 @@ class App(Tk):
                 if trace: print(f"old_index = {old_index}")
 
                 if action == "encode":
-                    new_index = old_index + int(offset)
+                    new_index = old_index + (offset % 26)
 
                     if new_index > 25:
                         new_index -= 26
 
                 if action == "decode":
-                    new_index = old_index - int(offset)
+                    new_index = old_index - (offset % 26)
 
                     if new_index < 0:
                         new_index += 26
