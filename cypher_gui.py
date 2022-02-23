@@ -221,12 +221,6 @@ class App(Tk):
         key_index = 0
 
         new_message = []
-        offset_index = letters.index(keyword[key_index])
-
-        if trace: print(f"offset_index - '{offset_index}'")
-
-        if action == "decode":
-            offset_index = -(letters.index(keyword[key_index]))
 
         for i in range(len(message_copy)):
 
@@ -238,7 +232,11 @@ class App(Tk):
             
             if trace: print(f"key_index='{key_index}'")
 
-            new_index = letters.index(message_copy[i]) + (letters.index(keyword[key_index]) % 26)
+            if action == "encode":
+                new_index = letters.index(message_copy[i]) + (letters.index(keyword[key_index]) % 26)
+
+            else:
+                new_index = letters.index(message_copy[i]) - (letters.index(keyword[key_index]) % 26)
             
             if new_index > 25:
                 new_index -= 26
