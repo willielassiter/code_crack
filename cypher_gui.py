@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 
 
 debug = True
@@ -13,9 +14,9 @@ class App(Tk):
         self.geometry("775x810")
         self.eval('tk::PlaceWindow . center')
 
-        # Text Boxes Labels, Entries, and Buttons
-        self.message = LabelFrame(self, text="Message")
-        self.message.pack(fill="both", expand="yes", padx=20, pady=(20, 0))
+        # Messages: Boxes Labels, Entries, and Buttons
+        self.message = LabelFrame(self, text="Messages")
+        self.message.grid(row=0, column=0, padx=20, pady=(20,10))
 
         self.input_label = Label(self.message, text="Input Message -")
         self.input_label.grid(row=0, column=0, padx=10, pady=(20,0), sticky=W)
@@ -27,42 +28,83 @@ class App(Tk):
         self.output_label.grid(row=2, column=0, padx=10, pady=(10,0), sticky=W)
 
         self.output_box = Text(self.message, width=100, height=15)
-        self.output_box.grid(row=3, column=0, padx=10, pady=(10,0))
+        self.output_box.grid(row=3, column=0, padx=10, pady=(10,20))
 
 
-        # Options Labels, Entries, and Buttons
+        # Options: Labels, Entries, and Buttons
         self.options = LabelFrame(self, text="Options")
-        self.options.pack(fill="x", expand="no", padx=20, pady=20, ipadx=20, ipady=10)
-
-        self.offset_keyword = Label(self.options, text="Offset/Keyword")
-        self.offset_keyword.grid(row=0, column=0, padx=20, pady=(15,0), sticky=E)
-
-        self.offset_keyword_entry = Entry(self.options, width=10)
-        self.offset_keyword_entry.grid(row=0, column=1, pady=(15,0), sticky=W)
+        self.options.grid(row=1, column=0, padx=20, pady=(0,10), ipadx=4)
 
         self.button_options = StringVar()
 
-        self.caesar_button = Radiobutton(self.options, text="Caesar", variable=self.button_options, value="caesar")
-        self.caesar_button.grid(row=0, column=2, padx=(18,10), pady=(20,0), sticky=N)
+        self.caesar_button = Radiobutton(self.options, text="Caesar", variable=self.button_options, value="caesar", command=self.disable_keyword)
+        self.caesar_button.grid(row=0, column=0, padx=(18,10), pady=(12,0), sticky=N)
         self.caesar_button.select()
 
-        self.vigenere_button = Radiobutton(self.options, text="Vigenere", variable=self.button_options, value="vigenere")
-        self.vigenere_button.grid(row=0, column=3, padx=(0,10), pady=(20,0), sticky=N)
+        self.vigenere_button = Radiobutton(self.options, text="Vigenere", variable=self.button_options, value="vigenere", command=self.disable_offset)
+        self.vigenere_button.grid(row=1, column=0, padx=(25,10), pady=(0,10), sticky=N)
+
+        self.offset = IntVar()
+
+        self.offset_label = Label(self.options, text="Offset:")
+        self.offset_label.grid(row=0, column=1, padx=20, sticky=E)
+
+        self.offset_entry = Entry(self.options, width=10, textvariable=self.offset)
+        self.offset_entry.grid(row=0, column=2, sticky=W)
+
+        self.keyword = StringVar()
+
+        self.keyword_label = Label(self.options, text="Keyword:")
+        self.keyword_label.grid(row=1, column=1, padx=20, pady=(0,10), sticky=E)
+
+        self.keyword_entry = Entry(self.options, width=10, textvariable=self.keyword)
+        self.keyword_entry.grid(row=1, column=2, pady=(0,10), sticky=W)
 
         self.encode_decode = StringVar()
 
         self.encode_button = Radiobutton(self.options, text="Encode", variable=self.encode_decode, value="encode")
-        self.encode_button.grid(row=1, column=2, padx=(10,0))
+        self.encode_button.grid(row=0, column=3, padx=(25,20), pady=(0,0))
         self.encode_button.select()
 
         self.decode_button = Radiobutton(self.options, text="Decode", variable=self.encode_decode, value="decode")
-        self.decode_button.grid(row=1, column=3, padx=(0,10))
+        self.decode_button.grid(row=1, column=3, padx=(25,20), pady=(0,10))
 
-        self.cypher_button = Button(self.options, text="Cypher Message !", command=lambda: self.cypher_options(self.button_options.get()))
-        self.cypher_button.grid(row=0, column=4, padx=(10,0), pady=(20,0), ipady=10)
+        self.cypher_button = Button(self.options, text="Cypher Message !", height=2, command=lambda: self.cypher_options(self.button_options.get()))
+        self.cypher_button.grid(row=0, column=4, rowspan=2, padx=15)
 
-        self.clear_button = Button(self.options, text="Clear Fields", command=self.clear_fields)
-        self.clear_button.grid(row=0, column=6, padx=10, pady=(20,0), ipady=10, sticky=W)
+        self.reset_button = Button(self.options, text="Reset", height=2, command=self.clear_fields)
+        self.reset_button.grid(row=0, column=5, rowspan=2, padx=15, sticky=W)
+
+        # Quit program button
+        self.close_button = Button(self, text="Close Application", command=self.destroy)
+        self.close_button.grid(row=2, column=0, columnspan=5, pady=10, ipadx=298, ipady=2)
+
+
+    def disable_keyword(self):
+        self.offset_entry.config(state=NORMAL)
+        self.keyword_entry.config(state=DISABLED)
+
+
+    def disable_offset(self):
+        self.keyword_entry.config(state=NORMAL)
+        self.offset_entry.config(state=DISABLED)
+
+
+    def clear_fields(self):
+        self.input_box.delete(1.0, "end")
+        self.output_box.delete(1.0, "end")
+
+        self.offset_entry.delete(0, END)
+        self.offset_entry.config(state=NORMAL)
+
+        self.keyword_entry.delete(0, END)
+        self.keyword_entry.config(state=DISABLED)
+
+        self.caesar_button.select()
+        self.vigenere_button.deselect()
+
+        self.encode_button.select()
+        self.decode_button.deselect()
 
 
     def cypher_options(self, options):
@@ -71,26 +113,13 @@ class App(Tk):
         if options == "caesar":
             if trace: print("calling caesar_cypher()")
 
-            app.caesar_cypher(self.input_box.get("1.0", END), self.offset_keyword_entry.get(), self.encode_decode.get())
+            app.caesar_cypher(self.input_box.get("1.0", END), self.offset_entry.get(), self.encode_decode.get())
 
 
-        if trace == "vigenere":
-            if debug: print("calling vigenere_cypher()")
+        if options == "vigenere":
+            if trace: print("calling vigenere_cypher()")
         
-            app.vigenere_cypher(self.input_box.get("1.0", END), self.offset_keyword_entry.get(), self.encode_decode.get())
-
-        
-    def clear_fields(self):
-        self.input_box.delete(1.0, "end")
-        self.output_box.delete(1.0, "end")
-
-        self.offset_keyword_entry.delete(0, END)
-
-        self.caesar_button.select()
-        self.vigenere_button.deselect()
-
-        self.encode_button.select()
-        self.decode_button.deselect()
+            app.vigenere_cypher(self.input_box.get("1.0", END), self.keyword_entry.get(), self.encode_decode.get())
 
 
     def display_results(self, results):
@@ -104,7 +133,15 @@ class App(Tk):
         message = message.lower()
 
         if debug: print(f"message = '{message}'")
-        
+
+        try:
+            offset = int(offset)
+
+            if debug: print(f"offset = {offset}")
+
+        except:
+            messagebox.showerror("showerror", "ERROR: Offset value must be an integer")
+
         new_message = ""
         alphabet = "abcdefghijklmnopqrstuvwxyz"
 
@@ -151,6 +188,12 @@ class App(Tk):
         message = message.lower()
 
         if debug: print(f"message = '{message}'")
+
+        try:
+            not keyword.isalpha()
+
+        except:
+            messagebox.showerror("showerror", "ERROR: Keyword must only contain alphabets")
 
         letters = "abcdefghijklmnopqrstuvwxyz"
         key_index = 0
