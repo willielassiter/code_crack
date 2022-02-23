@@ -7,7 +7,7 @@ def encode(message, key):
     message_copy = message.lower()
     key = key.lower()
 
-    if debug: print(f"message - '{message}'; keyword - '{keyword}'")
+    if debug: print(f"message - '{message}'; key - '{key}'")
 
     letters = "abcdefghijklmnopqrstuvwxyz"
     key_index = 0
