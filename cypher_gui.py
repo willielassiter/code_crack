@@ -112,13 +112,31 @@ class App(Tk):
         if options == "caesar":
             if trace: print("calling caesar_cypher()")
 
-            app.caesar_cypher(self.input_box.get("1.0", END), self.offset_entry.get(), self.encode_decode.get())
+            message = self.input_box.get("1.0", END)
+            action = self.encode_decode.get()
+
+            try:
+                offset = int(self.offset_entry.get())
+
+            except:
+                messagebox.showerror("showerror", "ERROR: Offset value must be an integer")
+
+            if trace: print("message - '{message}', offset = {offset}, action = '{action}'")
+
+            app.caesar_cypher(message, offset, action)
 
 
         if options == "vigenere":
             if trace: print("calling vigenere_cypher()")
+
+            message = self.input_box.get("1.0", END)
+            action = self.encode_decode.get()
+            keyword = self.keyword_entry.get()
+
+            if not keyword.isalpha():
+                messagebox.showerror("showerror", "ERROR: Keyword must only contain alphabets")
         
-            app.vigenere_cypher(self.input_box.get("1.0", END), self.keyword_entry.get(), self.encode_decode.get())
+            app.vigenere_cypher(message, keyword, action)
 
 
     def display_results(self, results):
@@ -132,14 +150,6 @@ class App(Tk):
         message_copy = message.lower()
 
         if debug: print(f"message_copy = '{message_copy}'")
-
-        try:
-            offset = int(offset)
-
-            if debug: print(f"offset = {offset}")
-
-        except:
-            messagebox.showerror("showerror", "ERROR: Offset value must be an integer")
 
         new_message = []
         alphabet = "abcdefghijklmnopqrstuvwxyz"
@@ -199,9 +209,6 @@ class App(Tk):
         keyword = keyword.lower()
 
         if debug: print(f"message - '{message}'; keyword - '{keyword}'")
-
-        if not keyword.isalpha():
-            messagebox.showerror("showerror", "ERROR: Keyword must only contain alphabets")
 
         letters = "abcdefghijklmnopqrstuvwxyz"
         key_index = 0
