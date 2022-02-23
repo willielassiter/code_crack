@@ -14,7 +14,7 @@ class App(Tk):
         self.geometry("775x810")
         self.eval('tk::PlaceWindow . center')
 
-        # Messages: Boxes Labels, Entries, and Buttons
+        # Messages: Labels, Entries, and Buttons
         self.message = LabelFrame(self, text="Messages")
         self.message.grid(row=0, column=0, padx=20, pady=(20,10))
 
@@ -29,7 +29,6 @@ class App(Tk):
 
         self.output_box = Text(self.message, width=100, height=15)
         self.output_box.grid(row=3, column=0, padx=10, pady=(10,20))
-
 
         # Options: Labels, Entries, and Buttons
         self.options = LabelFrame(self, text="Options")
@@ -209,15 +208,15 @@ class App(Tk):
             
             if action == "encode":
 
-                if debug: print(f"encode_decode.get() = '{action}'")
+                if debug: print(f"action = '{action}'")
 
-                new_index = letters.index(message[i]) + letters.index(keyword[key_index])
+                new_index = letters.index(message[i]) + (letters.index(keyword[key_index]) % 26)
             
                 if new_index > 25:
                     new_index -= 26
 
             if action == "decode":
-                new_index = letters.index(message[i]) - letters.index(keyword[key_index])
+                new_index = letters.index(message[i]) - (letters.index(keyword[key_index]) % 26)
 
                 if new_index < 0:
                     new_index += 26
