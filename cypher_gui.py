@@ -10,9 +10,16 @@ class App(Tk):
     def __init__(self):
         super().__init__()
 
-        self.title("Cypher")
-        self.geometry("775x810")
-        self.eval('tk::PlaceWindow . center')
+        self.title("Cypher GUI")
+
+        self.window_width = 775
+        self.window_height = 810
+        self.screen_width = self.winfo_screenwidth()
+        self.screen_height = self.winfo_screenheight()
+        self.x_coordinate = int((self.screen_width/2) - (self.window_height/2))
+        self.y_coordinate = int((self.screen_height/2) - (self.window_width/2))
+
+        self.geometry(f"{self.window_width}x{self.window_height}+{self.x_coordinate}+{self.y_coordinate}")
 
         # Messages: Labels, Entries, and Buttons
         self.message = LabelFrame(self, text="Messages")
@@ -68,7 +75,7 @@ class App(Tk):
         self.decode_button = Radiobutton(self.options, text="Decode", variable=self.encode_decode, value="decode")
         self.decode_button.grid(row=1, column=3, padx=(25,20), pady=(0,10))
 
-        self.cypher_button = Button(self.options, text="Cypher Message !", height=2, command=lambda: self.cypher_options(self.button_options.get()))
+        self.cypher_button = Button(self.options, text="Cypher Message !", height=2, command=lambda: self.cypher_message(self.button_options.get()))
         self.cypher_button.grid(row=0, column=4, rowspan=2, padx=15)
 
         self.reset_button = Button(self.options, text="Reset", height=2, command=self.clear_fields)
@@ -106,11 +113,11 @@ class App(Tk):
         self.decode_button.deselect()
 
 
-    def cypher_options(self, options):
-        if debug: print("initialized cypher_options()")
+    def cypher_message(self, options):
+        if debug: print("cypher_options()")
 
         if options == "caesar":
-            if trace: print("calling caesar_cypher()")
+            if trace: print("caesar_cypher()")
 
             message = self.input_box.get("1.0", END)
             action = self.encode_decode.get()
@@ -126,8 +133,8 @@ class App(Tk):
             app.caesar_cypher(message, offset, action)
 
 
-        if options == "vigenere":
-            if trace: print("calling vigenere_cypher()")
+        else:
+            if trace: print("vigenere_cypher()")
 
             message = self.input_box.get("1.0", END)
             action = self.encode_decode.get()
@@ -145,7 +152,7 @@ class App(Tk):
 
 
     def caesar_cypher(self, message, offset, action):
-        if debug: print(f"initialized caesar_cypher() with offset - {offset}")
+        if debug: print(f"caesar_cypher() with offset - {offset}")
 
         message_copy = message.lower()
 
@@ -203,7 +210,7 @@ class App(Tk):
 
 
     def vigenere_cypher(self, message, keyword, action):
-        if debug: print(f"initialized vigenere_cypher()")
+        if debug: print(f"vigenere_cypher()")
 
         message_copy = message.lower()
         keyword = keyword.lower()
@@ -229,7 +236,7 @@ class App(Tk):
 
                 if debug: print(f"action = '{action}'")
 
-                new_index = letters.index(message[i]) + (letters.index(keyword[key_index]) % 26)
+                new_index = letters.index(message_copy[i]) + (letters.index(keyword[key_index]) % 26)
             
                 if new_index > 25:
                     new_index -= 26
