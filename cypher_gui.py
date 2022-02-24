@@ -60,13 +60,13 @@ class App(Tk):
         self.offset_entry.grid(row=0, column=2, sticky=W)
 
         self.keyword = StringVar()
-        self.keyword.set("friends")
 
         self.keyword_label = Label(self.options, text="Keyword:")
         self.keyword_label.grid(row=1, column=1, padx=20, pady=(0,10), sticky=E)
 
         self.keyword_entry = Entry(self.options, width=10, textvariable=self.keyword)
         self.keyword_entry.grid(row=1, column=2, pady=(0,10), sticky=W)
+        self.keyword.set("friends")
 
         self.encode_decode = StringVar()
 
@@ -108,6 +108,7 @@ class App(Tk):
 
         self.keyword_entry.delete(0, END)
         self.keyword_entry.config(state=DISABLED)
+        self.keyword.set("friends")
 
         self.caesar_button.select()
         self.vigenere_button.deselect()
@@ -230,14 +231,10 @@ class App(Tk):
         for letter in keyword:
             if action == "encode":
                 indexes.append(letters.index(letter))
-                continue
-
-            indexes.append(-(letters.index(letter)))
-            continue
             
-            if trace: print(f"indexes - {indexes}")
-
-            return indexes
+            else:
+                indexes.append(-(letters.index(letter)))
+                continue
 
         for i in range(len(message_copy)):
 
