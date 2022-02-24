@@ -133,7 +133,7 @@ class App(Tk):
 
             if trace: print("message - '{message}', offset = {offset}, action = '{action}'")
 
-            app.caesar_cypher(message, offset, action)
+            results = app.caesar_cypher(message, offset, action)
 
 
         else:
@@ -146,7 +146,9 @@ class App(Tk):
             if not keyword.isalpha():
                 messagebox.showerror("showerror", "ERROR: Keyword must only contain alphabets")
         
-            app.vigenere_cypher(message, keyword, action)
+            results = app.vigenere_cypher(message, keyword, action)
+
+        app.display_results(results)
 
 
     def display_results(self, results):
@@ -206,7 +208,7 @@ class App(Tk):
 
         if debug: print(f"new_message = '{new_message}'")
 
-        app.display_results(new_message)
+        # app.display_results(new_message)
 
         return new_message
 
@@ -230,9 +232,8 @@ class App(Tk):
                 indexes.append(letters.index(letter))
                 continue
 
-            else:
-                indexes.append(-(letters.index(letter)))
-                continue
+            indexes.append(-(letters.index(letter)))
+            continue
             
             if trace: print(f"indexes - {indexes}")
 
@@ -276,7 +277,7 @@ class App(Tk):
             
         if debug: print(f"new_message - '{new_message}'")
 
-        app.display_results(new_message)
+        # app.display_results(new_message)
             
         return new_message
         
