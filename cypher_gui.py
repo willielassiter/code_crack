@@ -60,6 +60,7 @@ class App(Tk):
         self.offset_entry.grid(row=0, column=2, sticky=W)
 
         self.keyword = StringVar()
+        self.keyword.set("friends")
 
         self.keyword_label = Label(self.options, text="Keyword:")
         self.keyword_label.grid(row=1, column=1, padx=20, pady=(0,10), sticky=E)
@@ -79,7 +80,7 @@ class App(Tk):
         self.cypher_button = Button(self.options, text="Cypher Message !", height=2, command=lambda: self.cypher_message(self.button_options.get()))
         self.cypher_button.grid(row=0, column=4, rowspan=2, padx=15)
 
-        self.reset_button = Button(self.options, text="Reset", height=2, command=self.clear_fields)
+        self.reset_button = Button(self.options, text="Reset", height=2, command=self.reset_fields)
         self.reset_button.grid(row=0, column=5, rowspan=2, padx=15, sticky=W)
 
         # Quit program button
@@ -97,11 +98,12 @@ class App(Tk):
         self.offset_entry.config(state=DISABLED)
 
 
-    def clear_fields(self):
+    def reset_fields(self):
         self.input_box.delete(1.0, "end")
         self.output_box.delete(1.0, "end")
 
         self.offset_entry.delete(0, END)
+        self.offset_entry.insert(0, "0")
         self.offset_entry.config(state=NORMAL)
 
         self.keyword_entry.delete(0, END)
