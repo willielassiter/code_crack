@@ -218,9 +218,23 @@ class App(Tk):
         if debug: print(f"message - '{message}', keyword - '{keyword}', action - '{action}'")
 
         letters = "abcdefghijklmnopqrstuvwxyz"
-        key_index = 0
+        keyword_index = 0
 
         new_message = []
+        indexes = []
+        
+        for letter in keyword:
+            if action == "encode":
+                indexes.append(letters.index(letter))
+                continue
+
+            else:
+                indexes.append(-(letters.index(letter)))
+                continue
+            
+            if trace: print(f"indexes - {indexes}")
+
+            return indexes
 
         for i in range(len(message_copy)):
 
@@ -230,26 +244,22 @@ class App(Tk):
                 new_message.append(message_copy[i])
                 continue
             
-            if trace: print(f"key_index='{key_index}'")
+            new_index = letters.index(message_copy[i]) + indexes[keyword_index]
 
-            if action == "encode":
-                new_index = letters.index(message_copy[i]) + (letters.index(keyword[key_index]) % 26)
-
-            else:
-                new_index = letters.index(message_copy[i]) - (letters.index(keyword[key_index]) % 26)
-            
             if new_index > 25:
                 new_index -= 26
 
             if new_index < 0:
                 new_index += 26
 
+            if trace: print(f"letters.index(message_copy[i]) = '{letters.index(message_copy[i])}', indexes[i % len(keyword) = '{indexes[i % len(keyword)]}', new_index - '{new_index}', {letters[new_index]}")
+
             new_message.append(letters[new_index])
 
-            key_index += 1
+            keyword_index += 1
 
-            if key_index >= len(keyword):
-                key_index = key_index % len(keyword)
+            if keyword_index >= len(keyword):
+                keyword_index = keyword_index % len(keyword)
 
         for i in range(len(message)):
 
