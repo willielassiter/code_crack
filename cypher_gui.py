@@ -64,7 +64,7 @@ class CypherApplication(Tk):
         self.keyword_label = Label(self.options, text="Keyword:")
         self.keyword_label.grid(row=1, column=1, padx=20, pady=(0,10), sticky=E)
 
-        self.keyword_entry = Entry(self.options, width=10, textvariable=self.keyword)
+        self.keyword_entry = Entry(self.options, width=10, textvariable=self.keyword, state=DISABLED)
         self.keyword_entry.grid(row=1, column=2, pady=(0,10), sticky=W)
         self.keyword.set("friends")
 
