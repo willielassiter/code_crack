@@ -224,7 +224,7 @@ def caesar_cypher(message, offset, action):
 
             if trace: print(f"old_index = {old_index}")
             
-            new_index = old_index + offset
+            new_index = old_index + (offset % 26)
 
             if new_index > 25:
                 new_index -= 26
@@ -261,14 +261,14 @@ def vigenere_cypher(message, keyword, action):
     keyword_index = 0
 
     new_message = []
-    indexes = []
+    offsets = []
     
     for letter in keyword:
         if action == "encode":
-            indexes.append(ord(letter) - ord("a"))
+            offsets.append(ord(letter) - ord("a"))
         
         else:
-            indexes.append(-(ord(letter) - ord("a")))
+            offsets.append(-(ord(letter) - ord("a")))
             continue
 
     for letter in message:
@@ -285,9 +285,9 @@ def vigenere_cypher(message, keyword, action):
         else:
             old_index = ord(letter) - ord("A")
 
-        if trace: print(f"old_index = '{old_index}', indexes[keyword_index] = '{indexes[keyword_index]}', new_message - '{new_message}'")
+        if trace: print(f"old_index = '{old_index}', offsets[keyword_index] = '{offsets[keyword_index]}', new_message - '{new_message}'")
 
-        new_index = old_index + indexes[keyword_index]
+        new_index = old_index + (offsets[keyword_index] % 26)
 
         if new_index > 25:
             new_index -= 26
