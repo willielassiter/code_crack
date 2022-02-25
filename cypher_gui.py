@@ -6,21 +6,38 @@ from tkinter import messagebox
 debug = True
 trace = True
 
-class CypherApplication(Tk):
-    def __init__(self):
+class App(Tk):
+    def __init__(self, title, width, height):
         super().__init__()
 
-        self.title("Cypher GUI")
+        self.title(title)
 
         # Center app in screen
-        self.window_width = 775
-        self.window_height = 810
+        self.window_width = width
+        self.window_height = height
         self.screen_width = self.winfo_screenwidth()
         self.screen_height = self.winfo_screenheight()
         self.x_coordinate = int((self.screen_width/2) - (self.window_height/2))
         self.y_coordinate = int((self.screen_height/2) - (self.window_width/2))
 
-        self.geometry(f"{self.window_width}x{self.window_height}+{self.x_coordinate}+{self.y_coordinate}")
+        # Open app in previos position
+        try:
+            with open("app.config", "r") as config:
+                self.geometry(config.readline())
+        
+        except:
+            self.geometry(f"{self.window_width}x{self.window_height}+{self.x_coordinate}+{self.y_coordinate}")
+
+        self.bind("<Configure>", self.save_position)
+
+    def save_position(self, event):
+        with open("app.config", "w") as config:
+            config.write(self.geometry())
+
+
+class CypherApplication(App):
+    def __init__(self, title, width, height):
+        super().__init__(title, width, height)
 
         # Messages: Labels, Entries, and Buttons
         self.message = LabelFrame(self, text="Messages")
@@ -134,7 +151,7 @@ class CypherApplication(Tk):
 
 
     def cypher_message(self, options):
-        if debug: print("cypher_options()")
+        if debug: print("cypher_message()")
 
         if options == "caesar":
             if trace: print("calling caesar_cypher()")
@@ -147,6 +164,7 @@ class CypherApplication(Tk):
 
             except:
                 self.offset_error_label.grid(row=3, column=0, padx=20, sticky=W)
+                return
 
             if trace: print("message - '{message}', offset = {offset}, action = '{action}'")
 
@@ -162,6 +180,7 @@ class CypherApplication(Tk):
 
             if not keyword.isalpha():
                 self.keyword_error_label.grid(row=3, column=0, padx=20, sticky=W)
+                return
 
             results = vigenere_cypher(message, keyword, action)
 
@@ -293,6 +312,6 @@ def vigenere_cypher(message, keyword, action):
         
 
 if __name__ == "__main__":
-    app = CypherApplication()
+    app = CypherApplication(title="Cypher GUI", width=775, height=810)
     app.mainloop()
 
