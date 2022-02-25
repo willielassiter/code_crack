@@ -88,6 +88,25 @@ class CypherApplication(Tk):
         self.close_button.grid(row=2, column=0, columnspan=5, pady=10, ipadx=298, ipady=4)
 
 
+    def reset_fields(self):
+        self.input_box.delete(1.0, "end")
+        self.output_box.delete(1.0, "end")
+
+        self.offset_entry.delete(0, END)
+        self.offset_entry.insert(0, "0")
+
+        self.keyword_entry.delete(0, END)
+        self.keyword.set("friends")
+
+        self.disable_keyword()
+
+        self.caesar_button.select()
+        self.vigenere_button.deselect()
+
+        self.encode_button.select()
+        self.decode_button.deselect()
+
+
     def disable_keyword(self):
         self.offset_entry.config(state=NORMAL)
         self.keyword_entry.config(state=DISABLED)
@@ -96,25 +115,6 @@ class CypherApplication(Tk):
     def disable_offset(self):
         self.keyword_entry.config(state=NORMAL)
         self.offset_entry.config(state=DISABLED)
-
-
-    def reset_fields(self):
-        self.input_box.delete(1.0, "end")
-        self.output_box.delete(1.0, "end")
-
-        self.offset_entry.delete(0, END)
-        self.offset_entry.insert(0, "0")
-        self.offset_entry.config(state=NORMAL)
-
-        self.keyword_entry.delete(0, END)
-        self.keyword_entry.config(state=DISABLED)
-        self.keyword.set("friends")
-
-        self.caesar_button.select()
-        self.vigenere_button.deselect()
-
-        self.encode_button.select()
-        self.decode_button.deselect()
 
 
     def cypher_message(self, options):
@@ -134,7 +134,7 @@ class CypherApplication(Tk):
 
             if trace: print("message - '{message}', offset = {offset}, action = '{action}'")
 
-            results = app.caesar_cypher(message, offset, action)
+            results = caesar_cypher(message, offset, action)
 
 
         else:
@@ -147,7 +147,7 @@ class CypherApplication(Tk):
             if not keyword.isalpha():
                 messagebox.showerror("showerror", "ERROR: Keyword must only contain alphabets")
         
-            results = app.vigenere_cypher(message, keyword, action)
+            results = vigenere_cypher(message, keyword, action)
 
         self.display_results(results)
 
@@ -157,7 +157,7 @@ class CypherApplication(Tk):
         self.output_box.insert(1.0, results)
 
 
-def caesar_cypher(self, message, offset, action):
+def caesar_cypher(message, offset, action):
     if debug: print(f"caesar_cypher() with offset - {offset}")
 
     message_copy = message.lower().strip()
@@ -212,7 +212,7 @@ def caesar_cypher(self, message, offset, action):
     return new_message
 
 
-def vigenere_cypher(self, message, keyword, action):
+def vigenere_cypher(message, keyword, action):
     if debug: print(f"vigenere_cypher() with keyword -'{keyword}'")
 
     message_copy = message.lower().strip()
