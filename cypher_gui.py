@@ -85,7 +85,16 @@ class CypherApplication(Tk):
 
         # Quit program button
         self.close_button = Button(self, text="Close Application", command=self.destroy)
-        self.close_button.grid(row=2, column=0, columnspan=5, pady=10, ipadx=298, ipady=4)
+        self.close_button.grid(row=4, column=0, columnspan=5, pady=10, ipadx=298, ipady=4)
+
+        # Error labels
+        self.keyword_error_label = Label(self, text=">>> ERROR: Keyword must only contain alphabets")
+        self.keyword_error_label.grid(row=3, column=0, padx=20, sticky=W)
+        self.keyword_error_label.grid_remove()
+
+        self.offset_error_label = Label(self, text=">>> ERROR: Offset value must be an integer")
+        self.offset_error_label.grid(row=3, column=0, padx=20, sticky=W)
+        self.offset_error_label.grid_remove()
 
 
     def reset_fields(self):
@@ -106,6 +115,8 @@ class CypherApplication(Tk):
         self.encode_button.select()
         self.decode_button.deselect()
 
+        self.remove_error()
+
 
     def disable_keyword(self):
         self.offset_entry.config(state=NORMAL)
@@ -115,6 +126,11 @@ class CypherApplication(Tk):
     def disable_offset(self):
         self.keyword_entry.config(state=NORMAL)
         self.offset_entry.config(state=DISABLED)
+
+    
+    def remove_error(self):
+        self.keyword_error_label.grid_remove()
+        self.offset_error_label.grid_remove()
 
 
     def cypher_message(self, options):
@@ -130,7 +146,7 @@ class CypherApplication(Tk):
                 offset = int(self.offset_entry.get())
 
             except:
-                messagebox.showerror("showerror", "ERROR: Offset value must be an integer")
+                self.offset_error_label.grid(row=3, column=0, padx=20, sticky=W)
 
             if trace: print("message - '{message}', offset = {offset}, action = '{action}'")
 
@@ -145,11 +161,12 @@ class CypherApplication(Tk):
             keyword = self.keyword_entry.get()
 
             if not keyword.isalpha():
-                messagebox.showerror("showerror", "ERROR: Keyword must only contain alphabets")
-        
+                self.keyword_error_label.grid(row=3, column=0, padx=20, sticky=W)
+
             results = vigenere_cypher(message, keyword, action)
 
         self.display_results(results)
+        self.remove_error()
 
 
     def display_results(self, results):
