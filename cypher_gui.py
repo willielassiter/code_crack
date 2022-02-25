@@ -6,7 +6,7 @@ from tkinter import messagebox
 debug = True
 trace = True
 
-class App(Tk):
+class CypherApplication(Tk):
     def __init__(self):
         super().__init__()
 
@@ -149,7 +149,7 @@ class App(Tk):
         
             results = app.vigenere_cypher(message, keyword, action)
 
-        app.display_results(results)
+        self.display_results(results)
 
 
     def display_results(self, results):
@@ -157,94 +157,29 @@ class App(Tk):
         self.output_box.insert(1.0, results)
 
 
-    def caesar_cypher(self, message, offset, action):
-        if debug: print(f"caesar_cypher() with offset - {offset}")
+def caesar_cypher(self, message, offset, action):
+    if debug: print(f"caesar_cypher() with offset - {offset}")
 
-        message_copy = message.lower().strip()
+    message_copy = message.lower().strip()
 
-        if debug: print(f"message_copy = '{message_copy}'")
+    if debug: print(f"message_copy = '{message_copy}'")
 
-        if action == "decode":
-            offset = -(offset)
+    if action == "decode":
+        offset = -(offset)
 
-        new_message = []
-        alphabet = "abcdefghijklmnopqrstuvwxyz"
+    new_message = []
+    alphabet = "abcdefghijklmnopqrstuvwxyz"
 
-        for letter in message_copy:
+    for letter in message_copy:
 
-            if trace: print(f"iterating through '{letter}' in message_copy")
+        if trace: print(f"iterating through '{letter}' in message_copy")
 
-            if letter in alphabet:
-                old_index = alphabet.index(letter)
+        if letter in alphabet:
+            old_index = alphabet.index(letter)
 
-                if trace: print(f"old_index = {old_index}")
-                
-                new_index = old_index + (offset % 26)
-
-                if new_index > 25:
-                    new_index -= 26
-
-                if new_index < 0:
-                    new_index += 26
-
-                if trace: print(f"new_index = {new_index}")
-
-                new_message.append(alphabet[new_index])
-
-                if trace: print(f"new_message = {new_message}")
-
-            else:
-                new_message.append(letter)
-
-        for i in range(len(message)):
-
-            if debug: print(f"string[i] - '{message[i]}'")
-
-            if message[i].isupper():
-                new_message[i] = new_message[i].upper()
-                
-                if debug: print(f"new_message[i] - '{new_message[i]}'")
-    
-        new_message = "".join(new_message)
-
-        if debug: print(f"new_message = '{new_message}'")
-
-        # app.display_results(new_message)
-
-        return new_message
-
-
-    def vigenere_cypher(self, message, keyword, action):
-        if debug: print(f"vigenere_cypher() with keyword -'{keyword}'")
-
-        message_copy = message.lower().strip()
-        keyword = keyword.lower()
-
-        if debug: print(f"message - '{message}', keyword - '{keyword}', action - '{action}'")
-
-        letters = "abcdefghijklmnopqrstuvwxyz"
-        keyword_index = 0
-
-        new_message = []
-        indexes = []
-        
-        for letter in keyword:
-            if action == "encode":
-                indexes.append(letters.index(letter))
+            if trace: print(f"old_index = {old_index}")
             
-            else:
-                indexes.append(-(letters.index(letter)))
-                continue
-
-        for i in range(len(message_copy)):
-
-            if trace: print(message_copy[i])
-                
-            if not message_copy[i].isalpha():
-                new_message.append(message_copy[i])
-                continue
-            
-            new_index = letters.index(message_copy[i]) + indexes[keyword_index]
+            new_index = old_index + (offset % 26)
 
             if new_index > 25:
                 new_index -= 26
@@ -252,33 +187,95 @@ class App(Tk):
             if new_index < 0:
                 new_index += 26
 
-            if trace: print(f"letters.index(message_copy[i]) = '{letters.index(message_copy[i])}', indexes[i % len(keyword) = '{indexes[i % len(keyword)]}', new_index - '{new_index}', {letters[new_index]}")
+            if trace: print(f"new_index = {new_index}")
 
-            new_message.append(letters[new_index])
+            new_message.append(alphabet[new_index])
 
-            keyword_index += 1
+            if trace: print(f"new_message = {new_message}")
 
-            if keyword_index >= len(keyword):
-                keyword_index = keyword_index % len(keyword)
+        else:
+            new_message.append(letter)
 
-        for i in range(len(message)):
+    for i in range(len(message)):
 
-            if debug: print(f"message[i] - '{message[i]}'")
+        if debug: print(f"string[i] - '{message[i]}'")
 
-            if message[i].isupper():
-                new_message[i] = new_message[i].upper()
-                
-                if debug: print(f"new_message[i] - '{new_message[i]}'")
+        if message[i].isupper():
+            new_message[i] = new_message[i].upper()
+            
+            if debug: print(f"new_message[i] - '{new_message[i]}'")
+
+    new_message = "".join(new_message)
+
+    if debug: print(f"new_message = '{new_message}'")
+
+    return new_message
+
+
+def vigenere_cypher(self, message, keyword, action):
+    if debug: print(f"vigenere_cypher() with keyword -'{keyword}'")
+
+    message_copy = message.lower().strip()
+    keyword = keyword.lower()
+
+    if debug: print(f"message - '{message}', keyword - '{keyword}', action - '{action}'")
+
+    letters = "abcdefghijklmnopqrstuvwxyz"
+    keyword_index = 0
+
+    new_message = []
+    indexes = []
     
-        new_message = "".join(new_message)
-            
-        if debug: print(f"new_message - '{new_message}'")
+    for letter in keyword:
+        if action == "encode":
+            indexes.append(letters.index(letter))
+        
+        else:
+            indexes.append(-(letters.index(letter)))
+            continue
 
-        # app.display_results(new_message)
+    for i in range(len(message_copy)):
+
+        if trace: print(message_copy[i])
             
-        return new_message
+        if not message_copy[i].isalpha():
+            new_message.append(message_copy[i])
+            continue
+        
+        new_index = letters.index(message_copy[i]) + indexes[keyword_index]
+
+        if new_index > 25:
+            new_index -= 26
+
+        if new_index < 0:
+            new_index += 26
+
+        if trace: print(f"letters.index(message_copy[i]) = '{letters.index(message_copy[i])}', indexes[i % len(keyword) = '{indexes[i % len(keyword)]}', new_index - '{new_index}', {letters[new_index]}")
+
+        new_message.append(letters[new_index])
+
+        keyword_index += 1
+
+        if keyword_index >= len(keyword):
+            keyword_index = keyword_index % len(keyword)
+
+    for i in range(len(message)):
+
+        if debug: print(f"message[i] - '{message[i]}'")
+
+        if message[i].isupper():
+            new_message[i] = new_message[i].upper()
+            
+            if debug: print(f"new_message[i] - '{new_message[i]}'")
+
+    new_message = "".join(new_message)
+        
+    if debug: print(f"new_message - '{new_message}'")
+        
+    return new_message
         
 
 if __name__ == "__main__":
-    app = App()
+    app = CypherApplication()
     app.mainloop()
+
