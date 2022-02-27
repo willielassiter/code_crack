@@ -318,3 +318,5 @@ if __name__ == "__main__":
     app = CypherApplication(title="Cypher GUI", width=775, height=810)
     app.mainloop()
 
+    
+
