@@ -269,7 +269,6 @@ def vigenere_cypher(message, keyword, action):
         
         else:
             offsets.append(-(ord(letter) - ord("a")))
-            continue
 
     for letter in message:
 
