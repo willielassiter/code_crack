@@ -107,8 +107,3 @@ def decode(message, key):
 if __name__ == "__main__":
     print(decode("Dfc aruw fsti gr vjtwhr wznj? Vmph otis! cbx swv jipreneo uhllj kpi rahjib eg fjdkwkedhmp!", "friEnds"))
     print(encode("You were able to decode this? Nice work! You are becoming quite the expert at crytography!", "Friends"))
-    
-
-
-
-    
