@@ -37,6 +37,7 @@ def decoder(string, offset):
         else:
             new_string.append(letter)
 
+
         if debug: print(f"new_string - {new_string}")
 
     for i in range(len(string)):
@@ -52,12 +53,10 @@ def decoder(string, offset):
 
     if debug: print(f"new_string = '{new_string}'")
 
-    return new_string
 
+    return new_string
 
 decoder("HelLo", 3)
 
-
 # for offset in range(1, 26):
 #     print (offset, decoder("vhfinmxkl atox kxgwxkxw tee hy maxlx hew vbiaxkl tl hulhexmx. px'ee atox mh kxteer lmxi ni hnk ztfx by px ptgm mh dxxi hnk fxlltzxl ltyx.",  offset))
-
