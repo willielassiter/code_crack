@@ -1,7 +1,6 @@
 from tkinter import *
 from tkinter import ttk
 
-
 debug = True
 trace = True
 
