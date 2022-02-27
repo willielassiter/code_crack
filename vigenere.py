@@ -87,7 +87,6 @@ def decode(message, key):
 
         if key_index >= len(key):
             key_index = key_index % len(key)
-<<<<<<< HEAD
 
     for i in range(len(message)):
 
@@ -97,27 +96,6 @@ def decode(message, key):
             new_message[i] = new_message[i].upper()
             
             if debug: print(f"new_message[i] - '{new_message[i]}'")
-    
-    new_message = "".join(new_message)
-      
-    if debug: print(f"new_message - '{new_message}'")
-=======
->>>>>>> 43c0b34716577f6d29677960c1a6bf3bcfe69aea
-
-    for i in range(len(message)):
-
-        if debug: print(f"message[i] - '{message[i]}'")
-
-<<<<<<< HEAD
-if __name__ == "__main__":
-    print(decode("Dfc aruw fsti gr vjtwhr wznj? Vmph otis! cbx swv jipreneo uhllj kpi rahjib eg fjdkwkedhmp!", "friEnds"))
-    print(encode("You were able to decode this? Nice work! You are becoming quite the expert at crytography!", "Friends"))
-=======
-        if message[i].isupper():
-            new_message[i] = new_message[i].upper()
-            
-            if debug: print(f"new_message[i] - '{new_message[i]}'")
->>>>>>> 43c0b34716577f6d29677960c1a6bf3bcfe69aea
     
     new_message = "".join(new_message)
       
