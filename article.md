@@ -3,7 +3,7 @@
 ![Cypher GUI App final product](/gui_image.png "Cypher GUI App final product") 
 
 <p align="center">
-  <img src="https://github.com/willielassiter/code_crack/gui_image.png?raw=true" alt="Sublime's custom image"/>
+  <img src="https://github.com/willielassiter/code_crack/blob/main/gui_image.png?raw=true" alt="Cypher GUI image"/>
 </p>
 
 This article will explain how I built a Python graphical user interface (GUI) application, and provide a general overview of Tkinter - Python’s standard GUI package. The purpose of my application is to encrypt/decrypt messages using either the Caesar or Vigenere cypher method. Please note that I structured my code using object-oriented programming (OOP). This was done mainly to increase readability and maintainability, but moreover, OOP allows me or other programmers to easily import and reuse my code in the future.    
