@@ -1,7 +1,5 @@
 # Python GUI App with Tkinter  
 
-![Cypher GUI App final product](/gui_image.png "Cypher GUI App final product") 
-
 <p align="center">
   <img src="https://github.com/willielassiter/code_crack/blob/main/gui_image.png?raw=true" alt="Cypher GUI image"/>
 </p>
