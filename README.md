@@ -16,4 +16,8 @@ added in vs code on mbp
 
 mbp change
 
+<<<<<<< Updated upstream
 i'm only here to create a conflict
+=======
+and here is yet another line added to the readme for testing
+>>>>>>> Stashed changes
